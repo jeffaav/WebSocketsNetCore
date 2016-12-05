@@ -1,0 +1,40 @@
+@model List<Topic>
+
+@{
+    ViewData["Title"] = "Topic";
+}
+
+
+<div class="modal fade" id="newmodal" tabindex="-1" role="dialog"></div>
+
+<p class="text-xs-right">
+    <a asp-action="New" data-toggle="modal" data-target="#newmodal" data-ajax="true" data-ajax-update="#newmodal">
+        Nuevo Topic
+    </a>
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item._id</td>
+                    <td>@item.name</td>
+                    <td>
+                        <a asp-action="New" asp-route-id="@item._id" data-toggle="modal" data-target="#newmodal" data-ajax="true" data-ajax-update="#newmodal">
+                            Editar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
