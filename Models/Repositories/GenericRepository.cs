@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -39,8 +40,13 @@ namespace WebSocketsNetCore.Models.Repositories
         {
             return this.FindOne(new BsonDocument 
             {
-                { "_id", objectId }
+                { "_id", ObjectId.Parse(objectId) }
             });
+        }
+
+        public Task Insert(T document)
+        {
+            return this.collection.InsertOneAsync(document);
         }
     }
 }

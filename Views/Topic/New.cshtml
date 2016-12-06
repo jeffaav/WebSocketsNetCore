@@ -6,7 +6,7 @@
 }
 
 
-<form asp-action="New" data-ajax="true" data-ajax-method="POST" data-ajax-update="newmodal">
+<form asp-action="New" data-ajax="true" data-ajax-method="POST" data-ajax-update="#newmodal">
     <input type="hidden" asp-for="Id">
     <div class="modal-body">
         <div class="form-group">
@@ -28,10 +28,11 @@
         $.validator.unobtrusive.parse('.modal form');
     </script>
 
-    @if (ViewBag.Saved != null) 
+    @if (ViewBag.Saved != null && (bool)ViewBag.Saved == true) 
     {
         <script>
             $('.modal-header .close').click();
+            setTimeout(() => { location.reload(); }, 500);
         </script>
     }
 }
