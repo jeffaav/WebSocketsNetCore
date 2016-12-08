@@ -5,7 +5,7 @@ namespace WebSocketsNetCore.Models.Repositories
 {
     public class TopicRepository : GenericRepository<Topic>
     {
-        public TopicRepository(MongoClient client) : base(client)
+        public TopicRepository(IMongoDatabase database) : base(database)
         {
         }
     }

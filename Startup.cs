@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using WebSocketsNetCore.Models.Repositories;
+using WebSocketsNetCore.Models;
 
 namespace WebSocketsNetCore
 {
@@ -15,8 +15,7 @@ namespace WebSocketsNetCore
             services.AddMvc();
 
             services.AddTransient(typeof(MongoClient), p => new MongoClient("mongodb://127.0.0.1:27017"));
-
-            services.AddTransient<TopicRepository>();
+            services.AddTransient<UnitOfWork>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

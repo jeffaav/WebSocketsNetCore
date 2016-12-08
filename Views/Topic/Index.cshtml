@@ -26,11 +26,14 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item._id</td>
-                    <td>@item.name</td>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item._id" data-toggle="modal" data-target="#newmodal" data-ajax="true" data-ajax-update="#newmodal">
+                        <a asp-action="Edit" asp-route-id="@item.Id" data-toggle="modal" data-target="#newmodal" data-ajax="true" data-ajax-update="#newmodal">
                             Editar
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" data-toggle="modal" data-target="#newmodal" data-ajax="true" data-ajax-update="#newmodal">
+                            Eliminar
                         </a>
                     </td>
                 </tr>

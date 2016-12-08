@@ -9,21 +9,18 @@ namespace WebSocketsNetCore.Models.Repositories
 {
     public class GenericRepository<T>
     {
-        protected readonly MongoClient client;
-        protected readonly IMongoDatabase database;
-        protected readonly IMongoCollection<T> collection;
+        protected readonly IMongoDatabase _database;
+        protected readonly IMongoCollection<T> _collection;
 
-        public GenericRepository(MongoClient client)
+        public GenericRepository(IMongoDatabase database)
         {
-            this.client = client; 
-            this.database = client.GetDatabase("Websockets");
-            this.collection = this.database.GetCollection<T>(typeof(T).Name); 
-            Console.WriteLine(typeof(T).Name);
+            this._database = database;
+            this._collection = database.GetCollection<T>(typeof(T).Name); 
         }
 
         public IList<T> Find(FilterDefinition<T> filter) 
         {
-            return this.collection.Find(filter).ToList();
+            return this._collection.Find(filter).ToList();
         }
 
         public IList<T> Find()
@@ -38,15 +35,27 @@ namespace WebSocketsNetCore.Models.Repositories
 
         public T FindOne(string objectId)
         {
-            return this.FindOne(new BsonDocument 
-            {
-                { "_id", ObjectId.Parse(objectId) }
-            });
+            return this.FindOne(getFilterId(objectId));
         }
 
-        public Task Insert(T document)
+        public Task<DeleteResult> DeleteOne(string objectId)
         {
-            return this.collection.InsertOneAsync(document);
+            return this._collection.DeleteOneAsync(getFilterId(objectId));
         }
+
+        public Task InsertOne(T document)
+        {
+            return this._collection.InsertOneAsync(document);
+        }
+
+        public Task<ReplaceOneResult> UpdateOne(string objectId, T document)
+        {
+            return this._collection.ReplaceOneAsync(getFilterId(objectId), document);
+        }
+
+        protected Func<string, BsonDocument> getFilterId = (objectId) => new BsonDocument 
+        { 
+            { "_id", ObjectId.Parse(objectId) } 
+        };
     }
 }

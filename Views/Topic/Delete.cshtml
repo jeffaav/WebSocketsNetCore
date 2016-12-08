@@ -1,4 +1,4 @@
-@model WebSocketsNetCore.ViewModels.Topic.NewVM
+@model WebSocketsNetCore.ViewModels.Shared.DeleteVM
 
 @{
     Layout = "_ModalLayout";
@@ -6,17 +6,15 @@
 }
 
 
-<form asp-action="New" data-ajax="true" data-ajax-method="POST" data-ajax-update="#newmodal">
+<form asp-action="Delete" data-ajax="true" data-ajax-method="POST" data-ajax-update="#newmodal">
     <input type="hidden" asp-for="Id">
     <div class="modal-body">
         <div class="form-group">
-            <label asp-for="Name" class="control-label">Nombre del topic</label>
-            <input asp-for="Name" class="form-control">
-            <span asp-validation-for="Name"></span>
+            <label class="control-label">Está seguro de eliminar el topic?</label>
         </div>
         <div class="text-xs-right">
             <button type="submit" class="btn btn-primary">
-                Guardar
+                Borrar
             </button>
         </div>
 
@@ -28,7 +26,7 @@
         $.validator.unobtrusive.parse('.modal form');
     </script>
 
-    @if (ViewBag.Saved != null && (bool)ViewBag.Saved == true) 
+    @if (Model.Deleted) 
     {
         <script>
             $('.modal-header .close').click();
