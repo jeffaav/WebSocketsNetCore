@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using WebSocketsNetCore.Middlewares;
 using WebSocketsNetCore.Models;
 
 namespace WebSocketsNetCore
@@ -25,6 +26,7 @@ namespace WebSocketsNetCore
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+            app.UseWebsocketMiddleware();
         }
     }
 }

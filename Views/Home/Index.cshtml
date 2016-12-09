@@ -5,3 +5,41 @@
 <p class="text-xs-right">
     <a asp-action="Index" asp-controller="Topic">Topics</a>
 </p>
+
+<div class="form-group">
+    <label for="message" class="control-label">Escribe aquí tu mensaje</label>
+    <input type="text" id="message" name="message" class="form-control">
+</div>
+<div>
+    <button id="send" type="button" class="btn btn-primary">Enviar</button>
+</div>
+
+<div class="row">
+    <div id="messages" class="col-xs-12"></div>
+</div>
+
+
+
+@section Scripts {
+
+    <script src="/js/websockets.js"></script>
+    <script>
+
+        $('#send').on('click', (e) => {
+            let message = $('#message').val();
+            if (message)
+                myWebSocket.send(message);
+
+            $('#message').val('');
+        })
+
+        $(document).ready(() => {
+
+            myWebSocket.listen((message) => {
+                $('<p />')
+                    .text(message)
+                    .appendTo('#messages');
+            })
+        })
+    </script>
+}

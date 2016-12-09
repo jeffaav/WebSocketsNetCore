@@ -4,6 +4,10 @@ using MongoDB.Driver;
 using System.Net.WebSockets;
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Builder;
+using System;
+using System.Threading;
+using System.Text;
+using System.Collections.Generic;
 
 namespace WebSocketsNetCore.Middlewares
 {
@@ -12,11 +16,11 @@ namespace WebSocketsNetCore.Middlewares
         private readonly RequestDelegate next;
         private readonly MongoClient client;
 
-        private static ConcurrentBag<WebSocket> websocketsBag;
+        private static IList<WebSocket> websocketsBag;
 
         static WebsocketMiddleware()
         {
-            websocketsBag = new ConcurrentBag<WebSocket>();
+            websocketsBag = new List<WebSocket>();
         }
 
         public WebsocketMiddleware(RequestDelegate next, MongoClient client)
@@ -35,11 +39,33 @@ namespace WebSocketsNetCore.Middlewares
 
                 while (websocket.State == WebSocketState.Open)
                 {
-                    
+                    var token = CancellationToken.None;
+
+                    var buffer = new ArraySegment<byte>(new byte[4096]);
+                    var result = await websocket.ReceiveAsync(buffer, token);
+
+
+                    switch (result.MessageType)
+                    {
+                        case WebSocketMessageType.Text:
+                            var message = buffer.GetString();
+                            buffer = message.GetBytes();
+                            foreach (var ws in websocketsBag)
+                            {
+                                if (ws.State == WebSocketState.Open)
+                                    await ws.SendAsync(buffer, WebSocketMessageType.Text, true, token);
+                            }
+                            break;
+                        // case WebSocketMessageType.Close:
+                        //     Console.WriteLine("connection closed");
+                        //     break;
+                    }
                 }
             }
-
-            await next(context);
+            else
+            {
+                await next(context);
+            }
         }
     }
 
@@ -49,6 +75,16 @@ namespace WebSocketsNetCore.Middlewares
         {
             app.UseWebSockets();
             app.UseMiddleware<WebsocketMiddleware>();
+        }
+
+        public static string GetString(this ArraySegment<byte> buffer)
+        {
+            return Encoding.UTF8.GetString(buffer.Array, buffer.Offset, buffer.Count);
+        }
+
+        public static ArraySegment<byte> GetBytes(this string text)
+        {
+            return new ArraySegment<byte>(Encoding.UTF8.GetBytes(text));
         }
     }
 }
