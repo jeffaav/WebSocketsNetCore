@@ -1,0 +1,8 @@
+e:\Jeffrey\Git\WebSocketsNetCore\bin\Debug\netcoreapp1.0\WebSocketsNetCore.deps.json
+e:\Jeffrey\Git\WebSocketsNetCore\bin\Debug\netcoreapp1.0\WebSocketsNetCore.dll
+e:\Jeffrey\Git\WebSocketsNetCore\bin\Debug\netcoreapp1.0\WebSocketsNetCore.pdb
+e:\Jeffrey\Git\WebSocketsNetCore\obj\Debug\netcoreapp1.0\WebSocketsNetCore.AssemblyInfo.cs
+e:\Jeffrey\Git\WebSocketsNetCore\obj\Debug\netcoreapp1.0\WebSocketsNetCore.dll
+e:\Jeffrey\Git\WebSocketsNetCore\obj\Debug\netcoreapp1.0\WebSocketsNetCore.pdb
+e:\Jeffrey\Git\WebSocketsNetCore\bin\Debug\netcoreapp1.0\WebSocketsNetCore.runtimeconfig.json
+e:\Jeffrey\Git\WebSocketsNetCore\bin\Debug\netcoreapp1.0\WebSocketsNetCore.runtimeconfig.dev.json
